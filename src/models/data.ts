@@ -20,7 +20,7 @@ export interface DataModel {
     isLectureRoom: RawDataModel['강의실'];
     isTodayR: RawDataModel['오늘r'];
     homeroomTeacher: RawDataModel['담임'];
-    dayTime: RawDataModel['일과시간'];
+    classTimes: RawDataModel['일과시간'];
     dayData: RawDataModel['일자자료'];
     serverTime: RawDataModel['자료244'];
     classroom: RawDataModel['자료245'];
