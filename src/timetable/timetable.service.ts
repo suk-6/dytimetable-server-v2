@@ -6,11 +6,7 @@ import { ClassPeriod } from '../models/timetable';
 
 @Injectable()
 export class TimetableService {
-    constructor(private readonly parserService: ParserService) {
-        this.parserService.init().then(async () => {
-            this._sendTodaySportsAlert();
-        });
-    }
+    constructor(private readonly parserService: ParserService) {}
 
     #schedule: NodeJS.Timeout[] = [];
     #alertDisableDay = [
