@@ -24,12 +24,14 @@ export class NoticeController {
             return '비밀번호 오류입니다.';
         }
 
-        await this.noticeService.sendNotice({
-            title: sendNoticeData.title,
-            content: sendNoticeData.content,
-            sender: sendNoticeData.sender,
-            receiver: sendNoticeData.receiver,
-            createdAt: new Date(),
-        });
+        return await this.noticeService
+            .sendNotice({
+                title: sendNoticeData.title,
+                content: sendNoticeData.content,
+                sender: sendNoticeData.sender,
+                receiver: sendNoticeData.receiver,
+                createdAt: new Date(),
+            })
+            .then(() => '전송에 성공했습니다.');
     }
 }
