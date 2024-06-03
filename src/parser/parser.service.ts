@@ -61,6 +61,7 @@ export class ParserService {
 
     async getTimetable() {
         if (!this.#init) throw new Error('ParserService is not initialized');
+        await this.renewData();
         return this.#timetable;
     }
 
