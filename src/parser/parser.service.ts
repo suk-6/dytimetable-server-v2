@@ -208,11 +208,16 @@ export class ParserService {
             const todayData = this.#data.nowTimeTable[grade][classroomNo][
                 weekday
             ] as Array<number>;
+            const originalData = this.#data.originalTimeTable[grade][
+                classroomNo
+            ][weekday] as Array<number>;
             for (let period = 1; period <= todayData.length; period++) {
                 results[weekday].push(null);
 
                 const periodData = todayData[period];
+                const originalPeriodData = originalData[period];
                 if (periodData > 100) {
+                    const isChanged = periodData !== originalPeriodData;
                     const teacher = this._calcTeacherViaSTT(
                         periodData,
                         separator,
@@ -231,6 +236,7 @@ export class ParserService {
                         classTime: period,
                         subject: this.#data.subjects[subject] as string,
                         teacher: this.#data.teachers[teacher],
+                        isChanged: isChanged,
                     };
 
                     results[weekday][period - 1] = result;
