@@ -6,7 +6,9 @@ import { ClassPeriod } from '../models/timetable';
 
 @Injectable()
 export class TimetableService {
-    constructor(private readonly parserService: ParserService) {}
+    constructor(private readonly parserService: ParserService) {
+        this.parserService.init();
+    }
 
     #schedule: NodeJS.Timeout[] = [];
     #alertDisableDay = [
@@ -37,7 +39,11 @@ export class TimetableService {
             const delay = breakTime.getTime() - now.getTime();
             if (delay > 0) {
                 const fId = setTimeout(() => {
-                    this._sendTimeTable(todayBreakTimes.indexOf(breakTime) + 1);
+                    this.parserService.renewData(true).then(() => {
+                        this._sendTimeTable(
+                            todayBreakTimes.indexOf(breakTime) + 1,
+                        );
+                    });
                 }, delay);
                 this.#schedule.push(fId);
             }
@@ -86,6 +92,40 @@ export class TimetableService {
     }
 
     async _sendTimeTable(classTime: number) {
-        console.log('period', classTime, 'timetable alert');
+        const now = new Date();
+        const weekday = now.getDay();
+        const timetable = await this.parserService.getTimetable();
+
+        // Student timetable
+        Object.keys(timetable.student).forEach((grade) => {
+            Object.keys(timetable.student[grade]).forEach((classroomNo) => {
+                const classPeriod: ClassPeriod =
+                    timetable.student[grade][classroomNo][weekday][
+                        classTime - 1
+                    ];
+                if (classPeriod) {
+                    console.log(
+                        'period',
+                        `${classPeriod.grade}-${classPeriod.class}`,
+                        `다음 시간 알림`,
+                        `${classPeriod.classTime}교시 [${classPeriod.subject}] 입니다.`,
+                    );
+                }
+            });
+        });
+
+        // Teacher timetable
+        Object.keys(timetable.teacher).forEach((teacherNo) => {
+            const teacher = timetable.teacher[teacherNo];
+            const classPeriod: ClassPeriod = teacher[weekday][classTime - 1];
+            if (classPeriod) {
+                console.log(
+                    'period',
+                    `teacher-${teacherNo}`,
+                    `다음 수업 알림`,
+                    `${classPeriod.classTime}교시 [${classPeriod.grade}-${classPeriod.class} ${classPeriod.subject}] 입니다.`,
+                );
+            }
+        });
     }
 }
