@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { NeisModule } from './neis/neis.module';
 import { NoticeModule } from './notice/notice.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
     imports: [
@@ -26,6 +27,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         TimetableModule,
         NeisModule,
         NoticeModule,
+        FirebaseModule,
     ],
     controllers: [AppController],
     providers: [AppService],
