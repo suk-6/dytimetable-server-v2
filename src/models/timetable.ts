@@ -53,6 +53,7 @@ export interface ClassPeriod {
     classTime: number;
     subject: string;
     teacher: string;
+    isChanged?: boolean;
 }
 
 export type weekdayTimeTable = {
