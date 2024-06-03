@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Notice, NoticeDocument } from './notice.schema';
 import { FilterQuery, Model } from 'mongoose';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable()
 export class NoticeService {
     constructor(
         @InjectModel(Notice.name) private noticeModel: Model<NoticeDocument>,
+        private readonly firebaseService: FirebaseService,
     ) {}
 
     #timeFormat(started: Date) {
@@ -57,6 +59,13 @@ export class NoticeService {
 
     async sendNotice(notice: Notice) {
         const newNotice = new this.noticeModel(notice);
-        return newNotice.save();
+        return newNotice.save().then(() => {
+            this.firebaseService.sendNotificationByTopic(
+                'notice',
+                notice.receiver,
+                notice.title,
+                notice.content,
+            );
+        });
     }
 }
