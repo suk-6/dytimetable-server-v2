@@ -7,9 +7,9 @@ import { ClassPeriod } from '../models/timetable';
 @Injectable()
 export class TimetableService {
     constructor(private readonly parserService: ParserService) {
-        this.parserService.init().then(() => {
-            this._sendTimeTable(2);
-        });
+        // this.parserService.init().then(() => {
+        //     this._sendTimeTable(2);
+        // });
     }
 
     #schedule: NodeJS.Timeout[] = [];
@@ -109,9 +109,10 @@ export class TimetableService {
                     console.log(
                         'period',
                         `${classPeriod.grade}-${classPeriod.class}`,
-                        `다음 시간 알림`,
+                        classPeriod.isChanged
+                            ? `다음 시간 알림 (변동됨)`
+                            : `다음 시간 알림`,
                         `${classPeriod.classTime}교시 [${classPeriod.subject}] 입니다.`,
-                        classPeriod.isChanged,
                     );
                 }
             });
