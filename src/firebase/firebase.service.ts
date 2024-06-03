@@ -18,10 +18,10 @@ export class FirebaseService {
         title: string,
         body: string,
         topic: string,
-        data: TopicMessageDataModel | undefined,
         type: string,
+        data?: TopicMessageDataModel,
     ): Promise<TopicMessage> {
-        if (data === undefined)
+        if (!data)
             data = {
                 title: title,
                 body: body,
@@ -72,14 +72,14 @@ export class FirebaseService {
         topic: string,
         title: string,
         body: string,
-        data: TopicMessageDataModel,
+        data?: TopicMessageDataModel,
     ) {
         const message = await this.messageGenerator(
             title,
             body,
             topic,
-            data,
             type,
+            data,
         );
 
         try {
