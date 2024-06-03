@@ -15,26 +15,16 @@ import { RawDataModel } from 'src/models/rawdata';
 
 @Injectable()
 export class ParserService {
-    constructor() {
-        // this.init().then(async () => {
-        //     writeFileSync(
-        //         'example/student.json',
-        //         JSON.stringify(await this.makeStudentTimeTable(), null, 2),
-        //     );
-        //     writeFileSync(
-        //         'example/teacher.json',
-        //         JSON.stringify(await this.makeTeacherTimeTable(), null, 2),
-        //     );
-        // });
-    }
+    constructor() {}
 
     #init: boolean = false;
-    #data: DataModel;
+    #data: DataModel | null = null;
     #timetable: TimeTableModel;
     #weekdayString: string[] = ['일', '월', '화', '수', '목', '금', '토'];
     #renewTime: Date | null = null;
 
     async init() {
+        if (this.#init) throw new Error('ParserService is already initialized');
         try {
             await this.renewData(true);
             this.#init = true;
@@ -49,14 +39,15 @@ export class ParserService {
         if (
             this.#renewTime != null &&
             this.#data != null &&
-            now.getTime() - this.#renewTime.getTime() > 1000 * 60 * 10 &&
+            now.getTime() - this.#renewTime.getTime() < 1000 * 60 * 10 &&
             !force
         )
             return;
-
-        await this._getData();
-        this.#renewTime = new Date();
-        console.log(new Date(), 'Teacher data renewed');
+        await this._getData().then((data) => {
+            this.#timetable = data;
+            this.#renewTime = new Date();
+            console.log(new Date(), 'Data renewed');
+        });
     }
 
     async getTimetable() {
@@ -65,10 +56,29 @@ export class ParserService {
         return this.#timetable;
     }
 
+    async getTodayBreakTimes(): Promise<Date[]> {
+        if (!this.#init) throw new Error('ParserService is not initialized');
+        const rawClassTimes = this.#data.classTimes;
+        const result = [];
+        for (let i = 0; i < rawClassTimes.length; i++) {
+            const times = rawClassTimes[i].match(/\d{2}/g);
+            const classTime = new Date();
+            classTime.setHours(Number(times[0]));
+            classTime.setMinutes(Number(times[1]));
+            classTime.setSeconds(0);
+            classTime.setMilliseconds(0);
+            const breaks = classTime.getTime() - 10 * 60000;
+
+            result.push(new Date(breaks));
+        }
+
+        return result;
+    }
+
     async _getData() {
         const rawData = await this._getRawData();
         this.#data = await this._parseRawData(rawData);
-        this.#timetable = {
+        return {
             ...(await this._makeStudentTimeTable()),
             ...(await this._makeTeacherTimeTable()),
         } satisfies TimeTableModel;
@@ -105,7 +115,7 @@ export class ParserService {
             isLectureRoom: rawData.강의실,
             isTodayR: rawData.오늘r,
             homeroomTeacher: rawData.담임,
-            dayTime: rawData.일과시간,
+            classTimes: rawData.일과시간,
             dayData: rawData.일자자료,
             serverTime: rawData.자료244,
             classroom: rawData.자료245,
@@ -143,8 +153,6 @@ export class ParserService {
     }
 
     async _makeStudentTimeTable(): Promise<StudentTimeTableModel> {
-        if (!this.#init) return;
-
         const result: StudentTimeTableModel = {
             student: {
                 1: undefined,
@@ -170,8 +178,6 @@ export class ParserService {
     }
 
     async _makeTeacherTimeTable(): Promise<TeacherTimeTableModel> {
-        if (!this.#init) return;
-
         const result: TeacherTimeTableModel = {
             teacher: {},
         };
@@ -194,9 +200,6 @@ export class ParserService {
         grade: GradeT,
         classroomNo: ClassroomNoT,
     ) {
-        if (this.#init === false)
-            throw new Error('ParserService is not initialized');
-
         const separator = this.#data.separator;
         const results = {} as weekdayTimeTable;
 
@@ -241,9 +244,6 @@ export class ParserService {
     async _getTeacherTimeTableByTeacherNo(
         teacherNo: number,
     ): Promise<weekdayTimeTable> {
-        if (this.#init === false)
-            throw new Error('ParserService is not initialized');
-
         const teacher = this.#data.teachers[teacherNo];
         const teacherTimeTable = this.#data.teacherTimeTable[teacherNo];
         const separator = this.#data.separator;
