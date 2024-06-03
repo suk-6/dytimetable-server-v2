@@ -59,6 +59,11 @@ export class ParserService {
         console.log(new Date(), 'Teacher data renewed');
     }
 
+    async getTimetable() {
+        if (!this.#init) throw new Error('ParserService is not initialized');
+        return this.#timetable;
+    }
+
     async _getData() {
         const rawData = await this._getRawData();
         this.#data = await this._parseRawData(rawData);
