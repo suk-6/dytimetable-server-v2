@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "9024:3000"
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:7.0.8
+    restart: always
+    ports:
+      - "27018:27017"
+    env_file:
+      - .env.db
+    # volumes:
+    #   - ./data:/data/db
