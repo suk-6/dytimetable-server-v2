@@ -3,10 +3,14 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { ParserService } from '../parser/parser.service';
 import { isHoliday } from '@hyunbinseo/holidays-kr';
 import { ClassPeriod } from '../models/timetable';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable()
 export class TimetableService {
-    constructor(private readonly parserService: ParserService) {
+    constructor(
+        private readonly parserService: ParserService,
+        private readonly firebase: FirebaseService,
+    ) {
         this.parserService.init().then(() => {
             const now = new Date();
             if (8 <= now.getHours() && now.getHours() <= 16) {
@@ -90,7 +94,7 @@ export class TimetableService {
                                 classPeriod.subject,
                             )
                         ) {
-                            console.log(
+                            this.firebase.sendNotificationByTopic(
                                 'period',
                                 `${grade}-${classroomNo}`,
                                 `체육복 알림`,
@@ -116,7 +120,7 @@ export class TimetableService {
                         classTime - 1
                     ];
                 if (classPeriod) {
-                    console.log(
+                    this.firebase.sendNotificationByTopic(
                         'period',
                         `${classPeriod.grade}-${classPeriod.class}`,
                         classPeriod.isChanged
@@ -133,7 +137,7 @@ export class TimetableService {
             const teacher = timetable.teacher[teacherNo];
             const classPeriod: ClassPeriod = teacher[weekday][classTime - 1];
             if (classPeriod) {
-                console.log(
+                this.firebase.sendNotificationByTopic(
                     'period',
                     `teacher-${teacherNo}`,
                     `다음 수업 알림`,
