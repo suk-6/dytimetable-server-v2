@@ -216,7 +216,7 @@ export class ParserService {
             const originalData = this.#data.originalTimeTable[grade][
                 classroomNo
             ][weekday] as Array<number>;
-            for (let period = 1; period <= todayData.length; period++) {
+            for (let period = 1; period < todayData.length; period++) {
                 results[weekday].push(null);
 
                 const periodData = todayData[period];
