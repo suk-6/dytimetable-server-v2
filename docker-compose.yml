@@ -7,7 +7,7 @@ services:
       - .env
     restart: always
     ports:
-      - "9024:3000"
+      - "9027:3000"
     depends_on:
       - mongo
   mongo:
