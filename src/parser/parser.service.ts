@@ -10,8 +10,7 @@ import {
     WeekdayT,
     weekdayTimeTable,
 } from 'src/models/timetable';
-import { DataModel } from 'src/models/data';
-import { RawDataModel } from 'src/models/rawdata';
+import { DataModel, RawDataModel } from 'src/models/data';
 
 @Injectable()
 export class ParserService {
