@@ -7,9 +7,12 @@ import { ClassPeriod } from '../models/timetable';
 @Injectable()
 export class TimetableService {
     constructor(private readonly parserService: ParserService) {
-        // this.parserService.init().then(() => {
-        //     this._sendTimeTable(2);
-        // });
+        this.parserService.init().then(() => {
+            const now = new Date();
+            if (8 <= now.getHours() && now.getHours() <= 16) {
+                this._scheduleTimetable();
+            }
+        });
     }
 
     #schedule: NodeJS.Timeout[] = [];
@@ -25,6 +28,7 @@ export class TimetableService {
             clearTimeout(fId);
         }
         this.#schedule = [];
+        console.log('cleared');
     }
 
     // Monday to Friday at 8 AM
@@ -34,7 +38,7 @@ export class TimetableService {
 
         const now = new Date();
         if (isHoliday(now)) return;
-        if (this.isAlertDisableDay(now)) return;
+        // if (this.isAlertDisableDay(now)) return;
 
         const todayBreakTimes = await this.parserService.getTodayBreakTimes();
 
@@ -48,6 +52,7 @@ export class TimetableService {
                         );
                     });
                 }, delay);
+                console.log('scheduled', breakTime);
                 this.#schedule.push(fId);
             }
         }
