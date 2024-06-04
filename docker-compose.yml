@@ -15,5 +15,5 @@ services:
     restart: always
     env_file:
       - .env.db
-    # volumes:
-    #   - ./data:/data/db
+    volumes:
+      - ./data:/data/db
