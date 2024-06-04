@@ -1,4 +1,4 @@
-import { RawDataModel } from './rawData';
+import { RawDataModel } from '~/src/models/rawData';
 
 export interface DataModel {
     schoolName: RawDataModel['학교명'];
