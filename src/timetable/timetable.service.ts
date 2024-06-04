@@ -52,7 +52,11 @@ export class TimetableService {
                         );
                     });
                 }, delay);
-                console.log('scheduled', breakTime);
+                console.log(
+                    'scheduled:',
+                    breakTime,
+                    `${todayBreakTimes.indexOf(breakTime) + 1}교시`,
+                );
                 this.#schedule.push(fId);
             }
         }
