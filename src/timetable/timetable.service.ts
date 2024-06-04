@@ -142,4 +142,15 @@ export class TimetableService {
             }
         });
     }
+
+    async getTeachers() {
+        return this.parserService.getTeachers();
+    }
+
+    async getTimetable(grade: string, classroom: string) {
+        await this.parserService.renewData();
+        const timetable = await this.parserService.getTimetable();
+        if (grade === 'teacher') return timetable.teacher[classroom];
+        else return timetable.student[grade][classroom];
+    }
 }
