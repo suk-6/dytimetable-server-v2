@@ -1,6 +1,8 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { TimetableService } from './timetable.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('timetable')
 @Controller('timetable')
 export class TimetableController {
     constructor(private readonly timetableService: TimetableService) {}
