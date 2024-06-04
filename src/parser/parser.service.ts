@@ -55,6 +55,12 @@ export class ParserService {
         return this.#timetable;
     }
 
+    async getTeachers() {
+        if (!this.#init) throw new Error('ParserService is not initialized');
+        await this.renewData();
+        return this.#data.teachers;
+    }
+
     async getTodayBreakTimes(): Promise<Date[]> {
         if (!this.#init) throw new Error('ParserService is not initialized');
         const rawClassTimes = this.#data.classTimes;
