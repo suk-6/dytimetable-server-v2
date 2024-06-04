@@ -36,6 +36,7 @@ lerna-debug.log*
 
 # misc
 **/secret/
+.env
 .env.db
 
 example/
