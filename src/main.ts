@@ -14,10 +14,10 @@ async function bootstrap() {
         .setDescription(
             'The Dukyoung Timetable Service API Docs for developers.',
         )
-        .setVersion('1.0')
+        .setVersion('2.0.0')
         .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('/v2/api', app, document);
 
     app.setBaseViewsDir(join(__dirname, '..', 'static'));
     app.setViewEngine('hbs');
