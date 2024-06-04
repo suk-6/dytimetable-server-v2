@@ -42,7 +42,7 @@ export class TimetableService {
 
         const now = new Date();
         if (isHoliday(now)) return;
-        // if (this.isAlertDisableDay(now)) return;
+        if (this.isAlertDisableDay(now)) return;
 
         const todayBreakTimes = await this.parserService.getTodayBreakTimes();
 
