@@ -6,7 +6,7 @@ import { FirebaseService } from '../firebase/firebase.service';
 export class NeisService {
     constructor(private readonly firebase: FirebaseService) {}
 
-    async getDietInfo(dayString) {
+    async getDietInfo(dayString: string) {
         const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${process.env.NEIS_API_KEY}&Type=json&ATPT_OFCDC_SC_CODE=J10&SD_SCHUL_CODE=7531328&MLSV_YMD=${dayString}`;
         const response = await fetch(url, { cache: 'force-cache' });
 
