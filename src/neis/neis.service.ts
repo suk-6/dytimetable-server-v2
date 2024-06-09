@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { NeisMealModel } from 'src/models/neis';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable()
 export class NeisService {
-    constructor() {}
+    constructor(private readonly firebase: FirebaseService) {}
 
     async getDietInfo(dayString) {
         const url = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${process.env.NEIS_API_KEY}&Type=json&ATPT_OFCDC_SC_CODE=J10&SD_SCHUL_CODE=7531328&MLSV_YMD=${dayString}`;
