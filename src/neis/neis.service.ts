@@ -13,6 +13,20 @@ export class NeisService {
     async _sendTodayDiet() {
         const today = new Date();
         const diet = await this.getDiet(today);
+        const mealData = diet[2]
+            .split('\n\n')[0]
+            .split(',')
+            .map((item) => {
+                item = item.trim();
+                const nutritionStartIndex = item.indexOf('(');
+                item = item.slice(0, nutritionStartIndex);
+                item = item.trim();
+                return item;
+            })
+            .join(', ');
+        const kcal = diet[2].split('\n\n')[1];
+        const body = `${mealData}\n${kcal}`;
+
         if (diet[0]) {
             Object.keys(Grade).forEach((grade) => {
                 Object.keys(ClassroomNo).forEach((classroom) => {
@@ -20,10 +34,10 @@ export class NeisService {
                         `meal`,
                         `${Grade[grade]}-${ClassroomNo[classroom]}`,
                         diet[1],
-                        diet[2],
+                        body,
                         {
                             title: diet[1],
-                            body: diet[2],
+                            body: body,
                             type: 'meal',
                             click_action: 'meal',
                         },
