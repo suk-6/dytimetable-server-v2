@@ -19,4 +19,9 @@ export class TimetableController {
     ) {
         return this.timetableService.getTimetable(grade, classroom);
     }
+
+    @Get('all')
+    async getAllTimetable() {
+        return this.timetableService.getAllTimetable();
+    }
 }
