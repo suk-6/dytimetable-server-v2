@@ -157,4 +157,8 @@ export class TimetableService {
         if (grade === 'teacher') return timetable.teacher[classroom];
         else return timetable.student[grade][classroom];
     }
+
+    async getAllTimetable() {
+        return this.parserService.getTimetable();
+    }
 }
