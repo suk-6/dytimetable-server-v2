@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@hyunbinseo/holidays-kr':
-        specifier: ^2.2024.4
-        version: 2.2024.4
+        specifier: ^3.2025.0
+        version: 3.2025.0
       '@nestjs/common':
         specifier: ^10.0.0
         version: 10.3.8(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
@@ -403,8 +403,9 @@ packages:
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
 
-  '@hyunbinseo/holidays-kr@2.2024.4':
-    resolution: {integrity: sha512-eeImVHzdg55NFn/TWBF6YwWAQarmHJgmFzvlQajW1lcEJ/2VA7ZMQsiUZo/xutzKe9MBW+4EQRrOZNw5fmpbRQ==}
+  '@hyunbinseo/holidays-kr@3.2025.0':
+    resolution: {integrity: sha512-X9dk+Wt8TStK2IgoSTjWzYfSgxMBensb95NuoCM/J6MffWS7xU8SDeUwE7Rw0EBKe2CAWxg1ALxV7QigaxvNDg==}
+    engines: {node: '>=18'}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -3303,6 +3304,9 @@ packages:
     resolution: {integrity: sha512-/EH/sDgxU2eGxajKdwLCDmQ4FWq+kpi3uCmBGpw1xJtnAxEjlD8j8PEiGWpCIMIs3ciNAgH0d3TTJiUkYzyZjA==}
     engines: {node: '>=10.12.0'}
 
+  valibot@0.35.0:
+    resolution: {integrity: sha512-+i2aCRkReTrd5KBN/dW2BrPOvFnU5LXTV2xjZnjnqUIO8YUx6P2+MgRrkwF2FhkexgyKq/NIZdPdknhHf5A/Ww==}
+
   validator@13.12.0:
     resolution: {integrity: sha512-c1Q0mCiPlgdTVVVIJIrBuxNicYE+t/7oKeI9MWLj3fh/uq2Pxh/3eeWbVZ4OcGW1TUf53At0njHw5SMdA3tmMg==}
     engines: {node: '>= 0.10'}
@@ -3807,7 +3811,9 @@ snapshots:
 
   '@humanwhocodes/object-schema@2.0.3': {}
 
-  '@hyunbinseo/holidays-kr@2.2024.4': {}
+  '@hyunbinseo/holidays-kr@3.2025.0':
+    dependencies:
+      valibot: 0.35.0
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -7217,6 +7223,8 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.25
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
+
+  valibot@0.35.0: {}
 
   validator@13.12.0: {}
 
