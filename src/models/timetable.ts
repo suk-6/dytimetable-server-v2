@@ -63,9 +63,7 @@ export type weekdayTimeTable = {
 export interface StudentTimeTableModel {
     student: {
         [grade in GradeT]: {
-            [classroomNo in ClassroomNoT]: {
-                [weekday in WeekdayT]: ClassPeriod[];
-            };
+            [classroomNo in ClassroomNoT]: weekdayTimeTable;
         };
     };
 }
