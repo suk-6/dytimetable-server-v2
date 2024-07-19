@@ -119,7 +119,7 @@ export class TimetableService {
                         'period',
                         `${classPeriod.grade}-${classPeriod.class}`,
                         classPeriod.isChanged
-                            ? `다음 시간 알림 (변동됨)`
+                            ? `다음 시간 알림 (수업 교환됨)`
                             : `다음 시간 알림`,
                         `${classPeriod.classTime}교시 [${classPeriod.subject}] 입니다.`,
                     );
