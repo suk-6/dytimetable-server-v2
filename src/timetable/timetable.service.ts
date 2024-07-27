@@ -79,6 +79,9 @@ export class TimetableService {
         const studentTimetable = (await this.parserService.getTimetable())
             .student;
         const now = new Date();
+        if (isHoliday(now)) return;
+        if (this.isAlertDisableDay(now)) return;
+
         const weekday = now.getDay();
 
         Object.keys(studentTimetable).forEach((grade) => {
