@@ -22,6 +22,7 @@ export class TimetableService {
     #schedule: NodeJS.Timeout[] = [];
     #alertDisableDay = [
         '2024-7-22', // 1학기 방학식
+        '2024-7-28', // 1학기 방학
     ];
 
     async clearSchedule() {
