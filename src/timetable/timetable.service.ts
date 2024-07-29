@@ -20,9 +20,9 @@ export class TimetableService {
     }
 
     #schedule: NodeJS.Timeout[] = [];
-    #alertDisableDay = [
-        '2024-7-22', // 1학기 방학식
-        '2024-7-28', // 1학기 방학
+    #alertDisableDay = [];
+    #alertDisableSpan = [
+        '2024-7-22~2024-8-15', // 2024 여름 방학
     ];
 
     async clearSchedule() {
@@ -71,7 +71,17 @@ export class TimetableService {
 
         const dayString = `${year}-${month}-${day}`;
 
-        return this.#alertDisableDay.includes(dayString);
+        if (this.#alertDisableDay.includes(dayString)) return true;
+
+        for (const span of this.#alertDisableSpan) {
+            const [start, end] = span.split('~');
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            if (date >= startDate && date <= endDate) return true;
+        }
+
+        return false;
     }
 
     // Monday to Friday at 7 AM
