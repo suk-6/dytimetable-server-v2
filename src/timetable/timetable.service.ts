@@ -20,7 +20,9 @@ export class TimetableService {
     }
 
     #schedule: NodeJS.Timeout[] = [];
-    #alertDisableDay = [];
+    #alertDisableDay = [
+        '2024-9-4', // 9월 모의고사
+    ];
     #alertDisableSpan = [
         '2024-7-22~2024-8-15', // 2024 여름 방학
     ];
